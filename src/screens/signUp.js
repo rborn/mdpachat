@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 
-import { COLORS } from '../../src/lib/theme';
-
-const { width } = Dimensions.get('window');
+import { Input } from '../../src/components/textInput';
+import { COLORS, SIZES } from '../../src/lib/theme';
 
 class SignUpScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <TouchableOpacity style={styles.backButton}>
+                    <Text style={styles.backButtonText}>Back</Text>
+                </TouchableOpacity>
+
                 <Text style={styles.title}>sign up</Text>
-                <TextInput style={styles.input} placeholder={'Your Name'} placeholderTextColor={COLORS.lightText} />
-                <TextInput style={styles.input} placeholder={'Your Email'} placeholderTextColor={COLORS.lightText} />
-                <TextInput style={styles.input} placeholder={'Password'} placeholderTextColor={COLORS.lightText} />
-                <TextInput
-                    style={styles.input}
-                    placeholder={'Confirm Password'}
-                    placeholderTextColor={COLORS.lightText}
-                />
+
+                <Input placeholder={'Your Name'} />
+                <Input placeholder={'Your Email'} />
+                <Input placeholder={'Password'} secureTextEntry={true} />
+                <Input placeholder={'Confirm Password'} secureTextEntry={true} />
+
+                <TouchableOpacity style={styles.signupButton}>
+                    <Text style={styles.signupButtonText}>Sign Up</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -36,15 +40,26 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10
     },
-    input: {
-        margin: 10,
-        height: 30,
+    signupButton: {
+        margin: SIZES.margin,
+        height: SIZES.loginSignupInputHeight,
+        padding: SIZES.padding,
+        borderRadius: SIZES.loginSignupInputBorderRadius,
+        width: SIZES.loginSignupInputWidth,
+        backgroundColor: COLORS.lightButtonBackground,
+        alignItems: 'center'
+    },
+    signupButtonText: {
+        color: COLORS.darkText
+    },
+    backButton: {
+        position: 'absolute',
+        left: 20,
+        top: Platform.OS === 'ios' ? 40 : 20
+    },
+    backButtonText: {
         color: COLORS.lightText,
-        padding: 5,
-        borderColor: COLORS.borderColor,
-        borderRadius: 10,
-        borderWidth: 1,
-        width: width * 0.6
+        fontSize: 20
     }
 });
 
