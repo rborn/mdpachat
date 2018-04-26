@@ -7,4 +7,5 @@ target 'mdpachat' do
 
   # Pods for mdpachat
   pod 'Firebase/Core'
+  pod 'Firebase/Auth'
 end

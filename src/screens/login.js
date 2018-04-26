@@ -1,32 +1,71 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+
+import firebase from 'react-native-firebase';
 
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
 class SignUpScreen extends Component {
+    state = {
+        email: null,
+        password: null
+    };
+
+    signIn = async () => {
+        try {
+            await firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password);
+            return firebase.auth().currentUser.toJSON();
+        } catch (error) {
+            return { error };
+        }
+    };
+
     onPressSignup = () => {
         this.props.navigation.navigate('Signup');
     };
 
+    onLoginPress = async () => {
+        if (!this.state.email || !this.state.password) {
+            console.error('empty email or password');
+        } else {
+            const signedIn = await this.signIn();
+            console.log(signedIn);
+        }
+        // this.props.navigation.navigate('Tabs');
+    };
+
     render() {
+        const padding = Platform.OS == 'ios' ? 'padding' : null;
+
         return (
-            <KeyboardAvoidingView style={styles.container} behavior={'padding'} enabled>
-                <View style={styles.wrapper}>
-                    <Text style={styles.title}>login</Text>
+            <KeyboardAvoidingView style={styles.container} behavior={padding} enabled>
+                <ScrollView style={styles.scrollview} contentContainerStyle={styles.scrollContainer}>
+                    <View style={styles.wrapper}>
+                        <Text style={styles.title}>login</Text>
 
-                    <Input placeholder={'Your Email'} />
-                    <Input placeholder={'Password'} secureTextEntry={true} />
+                        <Input
+                            placeholder={'Your Email'}
+                            onChangeText={text => this.setState({ email: text })}
+                            value={this.state.email}
+                        />
+                        <Input
+                            placeholder={'Password'}
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({ password: text })}
+                            value={this.state.password}
+                        />
 
-                    <TouchableOpacity style={styles.loginButton}>
-                        <Text style={styles.loginButtonText}>Login</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.infoText}>Not a member yet?</Text>
+                        <TouchableOpacity style={styles.loginButton} onPress={this.onLoginPress}>
+                            <Text style={styles.loginButtonText}>Login</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.infoText}>Not a member yet?</Text>
 
-                    <TouchableOpacity style={styles.signupButton} onPress={this.onPressSignup}>
-                        <Text style={styles.signupButtonText}>Sign Up</Text>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity style={styles.signupButton} onPress={this.onPressSignup}>
+                            <Text style={styles.signupButtonText}>Sign Up</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </KeyboardAvoidingView>
         );
     }
@@ -43,6 +82,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    scrollview: {
+        flex: 1,
+        width: '100%'
+    },
+    scrollContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1
+    },
+
     title: {
         color: COLORS.lightTransparentText,
         fontSize: 40,

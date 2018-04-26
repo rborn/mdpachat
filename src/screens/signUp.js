@@ -10,21 +10,27 @@ class SignUpScreen extends Component {
         this.props.navigation.navigate('Login');
     };
 
+    onSignupPress = () => {
+        this.props.navigation.navigate('Tabs');
+    };
+
     render() {
         const padding = Platform.OS == 'ios' ? 'padding' : null;
         return (
             <KeyboardAvoidingView style={styles.container} behavior={padding} enabled>
                 <ScrollView style={styles.scrollview} contentContainerStyle={styles.scrollContainer}>
-                    <Text style={styles.title}>sign up</Text>
+                    <View style={styles.wrapper}>
+                        <Text style={styles.title}>sign up</Text>
 
-                    <Input placeholder={'Your Name'} />
-                    <Input placeholder={'Your Email'} />
-                    <Input placeholder={'Password'} secureTextEntry={true} />
-                    <Input placeholder={'Confirm Password'} secureTextEntry={true} />
+                        <Input placeholder={'Your Name'} />
+                        <Input placeholder={'Your Email'} />
+                        <Input placeholder={'Password'} secureTextEntry={true} />
+                        <Input placeholder={'Confirm Password'} secureTextEntry={true} />
 
-                    <TouchableOpacity style={styles.signupButton}>
-                        <Text style={styles.signupButtonText}>Sign Up</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.signupButton} onPress={this.onSignupPress}>
+                            <Text style={styles.signupButtonText}>Sign Up</Text>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.backButton} onPress={this.onPressBack}>
                     <Icon
