@@ -6,10 +6,14 @@ import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
 class SignUpScreen extends Component {
+    onPressBack = () => {
+        this.props.navigation.navigate('Login');
+    };
+
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.backButton}>
+                <TouchableOpacity style={styles.backButton} onPress={this.onPressBack}>
                     <Icon
                         name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
                         size={30}

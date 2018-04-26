@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
 class SignUpScreen extends Component {
+    onPressSignup = () => {
+        this.props.navigation.navigate('Signup');
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -18,7 +21,8 @@ class SignUpScreen extends Component {
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
                 <Text style={styles.infoText}>Not a member yet?</Text>
-                <TouchableOpacity style={styles.signupButton}>
+
+                <TouchableOpacity style={styles.signupButton} onPress={this.onPressSignup}>
                     <Text style={styles.signupButtonText}>Sign Up</Text>
                 </TouchableOpacity>
             </View>

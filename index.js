@@ -1,4 +1,22 @@
 import { AppRegistry } from 'react-native';
-import App from './src/screens/signUp';
+import loginScreen from './src/screens/login';
+import signupScreen from './src/screens/signUp';
 
-AppRegistry.registerComponent('mdpachat', () => App);
+import { createStackNavigator } from 'react-navigation';
+
+const rootNavigator = createStackNavigator(
+    {
+        Login: {
+            screen: loginScreen
+        },
+        Signup: {
+            screen: signupScreen
+        }
+    },
+    {
+        headerMode: 'none'
+        // initialRouteName: 'Signup'
+    }
+);
+
+AppRegistry.registerComponent('mdpachat', () => rootNavigator);
