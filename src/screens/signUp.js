@@ -14,14 +14,6 @@ class SignUpScreen extends Component {
         const padding = Platform.OS == 'ios' ? 'padding' : null;
         return (
             <KeyboardAvoidingView style={styles.container} behavior={padding} enabled>
-                <TouchableOpacity style={styles.backButton} onPress={this.onPressBack}>
-                    <Icon
-                        name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
-                        size={30}
-                        color={COLORS.lightText}
-                    />
-                    <Text style={styles.backButtonText}>Back</Text>
-                </TouchableOpacity>
                 <ScrollView style={styles.scrollview} contentContainerStyle={styles.scrollContainer}>
                     <Text style={styles.title}>sign up</Text>
 
@@ -34,6 +26,14 @@ class SignUpScreen extends Component {
                         <Text style={styles.signupButtonText}>Sign Up</Text>
                     </TouchableOpacity>
                 </ScrollView>
+                <TouchableOpacity style={styles.backButton} onPress={this.onPressBack}>
+                    <Icon
+                        name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
+                        size={30}
+                        color={COLORS.lightText}
+                    />
+                    <Text style={styles.backButtonText}>Back</Text>
+                </TouchableOpacity>
             </KeyboardAvoidingView>
         );
     }
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flex: 1
     },
     title: {
         color: COLORS.lightTransparentText,
