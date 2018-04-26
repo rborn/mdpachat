@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
@@ -9,6 +10,11 @@ class SignUpScreen extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.backButton}>
+                    <Icon
+                        name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
+                        size={30}
+                        color={COLORS.lightText}
+                    />
                     <Text style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
 
@@ -53,11 +59,15 @@ const styles = StyleSheet.create({
         color: COLORS.darkText
     },
     backButton: {
+        flexDirection: 'row',
         position: 'absolute',
+        alignItems: 'center',
         left: 20,
-        top: Platform.OS === 'ios' ? 40 : 20
+        top: Platform.OS === 'ios' ? 40 : 20,
+        height: 30
     },
     backButtonText: {
+        marginLeft: SIZES.margin,
         color: COLORS.lightText,
         fontSize: 20
     }
