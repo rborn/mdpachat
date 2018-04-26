@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
@@ -11,21 +11,23 @@ class SignUpScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>login</Text>
+            <KeyboardAvoidingView style={styles.container} behavior={'padding'} enabled>
+                <View style={styles.wrapper}>
+                    <Text style={styles.title}>login</Text>
 
-                <Input placeholder={'Your Email'} />
-                <Input placeholder={'Password'} secureTextEntry={true} />
+                    <Input placeholder={'Your Email'} />
+                    <Input placeholder={'Password'} secureTextEntry={true} />
 
-                <TouchableOpacity style={styles.loginButton}>
-                    <Text style={styles.loginButtonText}>Login</Text>
-                </TouchableOpacity>
-                <Text style={styles.infoText}>Not a member yet?</Text>
+                    <TouchableOpacity style={styles.loginButton}>
+                        <Text style={styles.loginButtonText}>Login</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.infoText}>Not a member yet?</Text>
 
-                <TouchableOpacity style={styles.signupButton} onPress={this.onPressSignup}>
-                    <Text style={styles.signupButtonText}>Sign Up</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity style={styles.signupButton} onPress={this.onPressSignup}>
+                        <Text style={styles.signupButtonText}>Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -36,6 +38,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: COLORS.primary
+    },
+    wrapper: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     title: {
         color: COLORS.lightTransparentText,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from '../../src/components/textInput';
@@ -11,8 +11,9 @@ class SignUpScreen extends Component {
     };
 
     render() {
+        const padding = Platform.OS == 'ios' ? 'padding' : null;
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior={padding} enabled>
                 <TouchableOpacity style={styles.backButton} onPress={this.onPressBack}>
                     <Icon
                         name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
@@ -21,18 +22,19 @@ class SignUpScreen extends Component {
                     />
                     <Text style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
+                <ScrollView style={styles.scrollview} contentContainerStyle={styles.scrollContainer}>
+                    <Text style={styles.title}>sign up</Text>
 
-                <Text style={styles.title}>sign up</Text>
+                    <Input placeholder={'Your Name'} />
+                    <Input placeholder={'Your Email'} />
+                    <Input placeholder={'Password'} secureTextEntry={true} />
+                    <Input placeholder={'Confirm Password'} secureTextEntry={true} />
 
-                <Input placeholder={'Your Name'} />
-                <Input placeholder={'Your Email'} />
-                <Input placeholder={'Password'} secureTextEntry={true} />
-                <Input placeholder={'Confirm Password'} secureTextEntry={true} />
-
-                <TouchableOpacity style={styles.signupButton}>
-                    <Text style={styles.signupButtonText}>Sign Up</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity style={styles.signupButton}>
+                        <Text style={styles.signupButtonText}>Sign Up</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -43,6 +45,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: COLORS.primary
+    },
+    scrollview: {
+        flex: 1,
+        width: '100%'
+    },
+    scrollContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     title: {
         color: COLORS.lightTransparentText,
