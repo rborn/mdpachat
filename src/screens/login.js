@@ -9,22 +9,15 @@ class SignUpScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.backButton}>
-                    <Icon
-                        name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
-                        size={30}
-                        color={COLORS.lightText}
-                    />
-                    <Text style={styles.backButtonText}>Back</Text>
-                </TouchableOpacity>
+                <Text style={styles.title}>login</Text>
 
-                <Text style={styles.title}>sign up</Text>
-
-                <Input placeholder={'Your Name'} />
                 <Input placeholder={'Your Email'} />
                 <Input placeholder={'Password'} secureTextEntry={true} />
-                <Input placeholder={'Confirm Password'} secureTextEntry={true} />
 
+                <TouchableOpacity style={styles.loginButton}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
+                <Text style={styles.infoText}>Not a member yet?</Text>
                 <TouchableOpacity style={styles.signupButton}>
                     <Text style={styles.signupButtonText}>Sign Up</Text>
                 </TouchableOpacity>
@@ -46,7 +39,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: SIZES.margin
     },
-    signupButton: {
+    loginButton: {
         margin: SIZES.margin,
         height: SIZES.loginSignupInputHeight,
         padding: SIZES.padding,
@@ -55,22 +48,23 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.lightButtonBackground,
         alignItems: 'center'
     },
-    signupButtonText: {
+    loginButtonText: {
         color: COLORS.darkText,
         fontSize: 15
     },
-    backButton: {
-        flexDirection: 'row',
-        position: 'absolute',
-        alignItems: 'center',
-        left: 20,
-        top: Platform.OS === 'ios' ? 40 : 20,
-        height: 30
-    },
-    backButtonText: {
-        marginLeft: SIZES.margin,
+    infoText: {
+        marginBottom: 0,
+        marginTop: 20,
         color: COLORS.lightText,
-        fontSize: 20
+        fontSize: 12
+    },
+    signupButton: {
+        marginTop: 0,
+        padding: SIZES.padding
+    },
+    signupButtonText: {
+        color: COLORS.lightText,
+        fontSize: 15
     }
 });
 
