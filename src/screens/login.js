@@ -12,7 +12,7 @@ class SignUpScreen extends Component {
         password: null
     };
 
-    signIn = async () => {
+    loginIn = async () => {
         try {
             await firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password);
             return firebase.auth().currentUser.toJSON();
@@ -29,18 +29,22 @@ class SignUpScreen extends Component {
         if (!this.state.email || !this.state.password) {
             console.error('empty email or password');
         } else {
-            const signedIn = await this.signIn();
+            const signedIn = await this.loginIn();
             console.log(signedIn);
         }
         // this.props.navigation.navigate('Tabs');
     };
 
     render() {
-        const padding = Platform.OS == 'ios' ? 'padding' : null;
+        const behavior = Platform.OS == 'ios' ? 'padding' : null;
 
         return (
-            <KeyboardAvoidingView style={styles.container} behavior={padding} enabled>
-                <ScrollView style={styles.scrollview} contentContainerStyle={styles.scrollContainer}>
+            <KeyboardAvoidingView style={styles.container} behavior={behavior}>
+                <ScrollView
+                    style={styles.scrollview}
+                    contentContainerStyle={styles.scrollContainer}
+                    showsVerticalScrollIndicator={false}
+                >
                     <View style={styles.wrapper}>
                         <Text style={styles.title}>login</Text>
 

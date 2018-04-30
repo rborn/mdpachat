@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,13 +15,16 @@ class SignUpScreen extends Component {
     };
 
     render() {
-        const padding = Platform.OS == 'ios' ? 'padding' : null;
+        const behavior = Platform.OS == 'ios' ? 'padding' : null;
         return (
-            <KeyboardAvoidingView style={styles.container} behavior={padding} enabled>
-                <ScrollView style={styles.scrollview} contentContainerStyle={styles.scrollContainer}>
+            <KeyboardAvoidingView style={styles.container} behavior={behavior}>
+                <ScrollView
+                    style={styles.scrollview}
+                    contentContainerStyle={styles.scrollContainer}
+                    showsVerticalScrollIndicator={false}
+                >
                     <View style={styles.wrapper}>
                         <Text style={styles.title}>sign up</Text>
-
                         <Input placeholder={'Your Name'} />
                         <Input placeholder={'Your Email'} />
                         <Input placeholder={'Password'} secureTextEntry={true} />
@@ -51,6 +54,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: COLORS.primary
+    },
+    wrapper: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     scrollview: {
         flex: 1,
