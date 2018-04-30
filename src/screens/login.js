@@ -8,7 +8,7 @@ import firebase from 'react-native-firebase';
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
-class SignUpScreen extends Component {
+class LoginScreen extends Component {
     static propTypes = {
         navigation: PropTypes.object
     };
@@ -33,12 +33,14 @@ class SignUpScreen extends Component {
 
     onLoginPress = async () => {
         if (!this.state.email || !this.state.password) {
-            console.error('empty email or password');
+            console.log('empty email or password');
         } else {
-            const signedIn = await this.loginIn();
-            console.log(signedIn);
+            const loggedIn = await this.loginIn();
+            console.log(loggedIn);
+            // if (loggedIn.error) {
+            //     this.props.navigation.navigate('Tabs');
+            // }
         }
-        // this.props.navigation.navigate('Tabs');
     };
 
     render() {
@@ -137,4 +139,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignUpScreen;
+export default LoginScreen;
