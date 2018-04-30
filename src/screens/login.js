@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 
 import firebase from 'react-native-firebase';
@@ -7,6 +9,10 @@ import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
 class SignUpScreen extends Component {
+    static propTypes = {
+        navigation: PropTypes.object
+    };
+
     state = {
         email: null,
         password: null

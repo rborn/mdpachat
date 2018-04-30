@@ -1,4 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { StyleSheet, Text, View, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -6,6 +8,10 @@ import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
 class SignUpScreen extends Component {
+    static propTypes = {
+        navigation: PropTypes.object
+    };
+
     onPressBack = () => {
         this.props.navigation.navigate('Login');
     };
