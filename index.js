@@ -6,9 +6,21 @@ import chatRoomsScreen from './src/screens/chatRooms';
 
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
+const membersNavigator = createStackNavigator(
+    {
+        MembersList: {
+            screen: membersScreen,
+            navigationOptions: {
+                title: 'Members'
+            }
+        }
+    },
+    {}
+);
+
 const tabNavigator = createBottomTabNavigator({
     Members: {
-        screen: membersScreen
+        screen: membersNavigator
     },
     ChatRooms: {
         screen: chatRoomsScreen
