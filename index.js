@@ -15,13 +15,25 @@ const tabNavigator = createBottomTabNavigator({
     }
 });
 
-const rootNavigator = createStackNavigator(
+const authNavigator = createStackNavigator(
     {
         Login: {
             screen: loginScreen
         },
         Signup: {
             screen: signupScreen
+        }
+    },
+    {
+        headerMode: 'none',
+        initialRouteName: 'Login'
+    }
+);
+
+const rootNavigator = createStackNavigator(
+    {
+        Auth: {
+            screen: authNavigator
         },
         Tabs: {
             screen: tabNavigator
@@ -29,7 +41,8 @@ const rootNavigator = createStackNavigator(
     },
     {
         headerMode: 'none',
-        initialRouteName: 'Login'
+        mode: 'modal',
+        initialRouteName: 'Auth'
     }
 );
 

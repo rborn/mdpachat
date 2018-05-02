@@ -38,7 +38,7 @@ class LoginScreen extends Component {
             const loggedIn = await this.loginIn();
             console.log(loggedIn);
             // if (loggedIn.error) {
-            //     this.props.navigation.navigate('Tabs');
+            this.props.navigation.navigate('Tabs');
             // }
         }
     };
