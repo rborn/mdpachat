@@ -25,7 +25,7 @@ class MembersScreen extends Component {
                         </View>
                     );
                 }}
-                inverted
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
             />
         );
     }
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     },
     listItem: {
         height: 70,
-        marginBottom: 1,
         justifyContent: 'center',
         backgroundColor: COLORS.screenBackground
     },
@@ -73,7 +72,10 @@ const styles = StyleSheet.create({
         color: COLORS.darkText
     },
     flatList: {
-        marginTop: Platform.OS == 'ios' ? 20 : 0,
+        backgroundColor: COLORS.screenBackground
+    },
+    separator: {
+        height: 1,
         backgroundColor: COLORS.lightBackground
     }
 });
