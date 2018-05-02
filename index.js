@@ -36,7 +36,10 @@ const rootNavigator = createStackNavigator(
             screen: authNavigator
         },
         Tabs: {
-            screen: tabNavigator
+            screen: tabNavigator,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
         }
     },
     {
