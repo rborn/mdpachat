@@ -8,9 +8,12 @@ const COLORS = {
     borderColor: '#FFF',
     lightText: '#FFF',
     darkText: '#333',
+    primaryText: '#000',
     lightTransparentText: '#FFFFFF77',
     lightButtonBackground: '#FFF',
-    screenBackground: '#FFF'
+    screenBackground: '#FFF',
+    darkBackground: '#333',
+    lightBackground: '#999'
 };
 const SIZES = {
     margin: 10,

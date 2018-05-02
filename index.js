@@ -45,7 +45,7 @@ const rootNavigator = createStackNavigator(
     {
         headerMode: 'none',
         mode: 'modal',
-        initialRouteName: 'Auth'
+        initialRouteName: 'Tabs'
     }
 );
 
