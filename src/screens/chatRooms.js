@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Platform } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 
-import { COLORS, SIZES } from '../../src/lib/theme';
+import { COLORS } from '../../src/lib/theme';
 
 import { rooms } from '../lib/chat';
 
@@ -18,9 +18,7 @@ class ChatRoomsScreen extends Component {
                     return (
                         <View style={styles.listItem}>
                             <Text style={styles.name}>{`${item.name}`}</Text>
-                            <Text style={styles.time} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {`${item.lastMessageTime}`}
-                            </Text>
+                            <Text style={styles.time}>{`${item.lastMessageTime}`}</Text>
                         </View>
                     );
                 }}
@@ -31,18 +29,6 @@ class ChatRoomsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: COLORS.screenBackground
-    },
-    title: {
-        color: 'red',
-        fontSize: 40,
-        textAlign: 'center',
-        margin: SIZES.margin
-    },
     listItem: {
         flex: 1,
         flexDirection: 'row',
