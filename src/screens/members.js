@@ -39,18 +39,6 @@ class MembersScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: COLORS.screenBackground
-    },
-    title: {
-        color: 'red',
-        fontSize: 40,
-        textAlign: 'center',
-        margin: SIZES.margin
-    },
     listItem: {
         height: 70,
         justifyContent: 'center',
