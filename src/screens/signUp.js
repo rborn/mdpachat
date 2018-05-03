@@ -7,17 +7,36 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
+import { register } from '../lib/api';
+
 class SignUpScreen extends Component {
     static propTypes = {
         navigation: PropTypes.object
+    };
+
+    state = {
+        name: null,
+        email: null,
+        password: null,
+        repeatPassword: null
     };
 
     onPressBack = () => {
         this.props.navigation.navigate('Login');
     };
 
-    onSignupPress = () => {
-        this.props.navigation.navigate('Tabs');
+    onSignupPress = async () => {
+        const registered = await register({
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password
+        });
+
+        if (!registered.error) {
+            this.props.navigation.navigate('Tabs');
+        } else {
+            console.log(registered);
+        }
     };
 
     render() {
@@ -31,10 +50,18 @@ class SignUpScreen extends Component {
                 >
                     <View style={styles.wrapper}>
                         <Text style={styles.title}>sign up</Text>
-                        <Input placeholder={'Your Name'} />
-                        <Input placeholder={'Your Email'} />
-                        <Input placeholder={'Password'} secureTextEntry={true} />
-                        <Input placeholder={'Confirm Password'} secureTextEntry={true} />
+                        <Input placeholder={'Your Name'} onChangeText={text => this.setState({ name: text })} />
+                        <Input placeholder={'Your Email'} onChangeText={text => this.setState({ email: text })} />
+                        <Input
+                            placeholder={'Password'}
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({ password: text })}
+                        />
+                        <Input
+                            placeholder={'Confirm Password'}
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({ repeatPassword: text })}
+                        />
 
                         <TouchableOpacity style={styles.signupButton} onPress={this.onSignupPress}>
                             <Text style={styles.signupButtonText}>Sign Up</Text>

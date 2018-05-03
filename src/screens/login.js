@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 
 import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 
-import firebase from 'react-native-firebase';
-
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
+import { login } from '../lib/api';
 
 class LoginScreen extends Component {
     static propTypes = {
@@ -18,15 +17,6 @@ class LoginScreen extends Component {
         password: null
     };
 
-    loginIn = async () => {
-        try {
-            await firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password);
-            return firebase.auth().currentUser.toJSON();
-        } catch (error) {
-            return { error };
-        }
-    };
-
     onPressSignup = () => {
         this.props.navigation.navigate('Signup');
     };
@@ -35,11 +25,12 @@ class LoginScreen extends Component {
         if (!this.state.email || !this.state.password) {
             console.log('empty email or password');
         } else {
-            const loggedIn = await this.loginIn();
-            console.log(loggedIn);
-            // if (loggedIn.error) {
-            this.props.navigation.navigate('Tabs');
-            // }
+            const loggedIn = await login(this.state);
+            if (!loggedIn.error) {
+                this.props.navigation.navigate('Tabs');
+            } else {
+                console.log(loggedIn);
+            }
         }
     };
 
