@@ -1,4 +1,7 @@
-import { AppRegistry } from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import loginScreen from './src/screens/login';
 import signupScreen from './src/screens/signUp';
 import membersScreen from './src/screens/members';
@@ -28,10 +31,20 @@ const chatRoomsNavigator = createStackNavigator({
 
 const tabNavigator = createBottomTabNavigator({
     Members: {
-        screen: membersNavigator
+        screen: membersNavigator,
+        navigationOptions: {
+            tabBarIcon: ({ focused, tintColor }) => (
+                <Icon name={focused ? 'ios-people' : 'ios-people-outline'} color={tintColor} size={28} />
+            )
+        }
     },
     ChatRooms: {
-        screen: chatRoomsNavigator
+        screen: chatRoomsNavigator,
+        navigationOptions: {
+            tabBarIcon: ({ focused, tintColor }) => (
+                <Icon name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} color={tintColor} size={28} />
+            )
+        }
     }
 });
 
