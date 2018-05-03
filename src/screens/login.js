@@ -51,6 +51,7 @@ class LoginScreen extends Component {
                         <Input
                             placeholder={'Your Email'}
                             onChangeText={text => this.setState({ email: text })}
+                            autoCapitalize={'none'}
                             value={this.state.email}
                         />
                         <Input

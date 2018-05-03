@@ -52,7 +52,11 @@ class SignUpScreen extends Component {
                     <View style={styles.wrapper}>
                         <Text style={styles.title}>sign up</Text>
                         <Input placeholder={'Your Name'} onChangeText={text => this.setState({ name: text })} />
-                        <Input placeholder={'Your Email'} onChangeText={text => this.setState({ email: text })} />
+                        <Input
+                            placeholder={'Your Email'}
+                            onChangeText={text => this.setState({ email: text })}
+                            autoCapitalize={'none'}
+                        />
                         <Input
                             placeholder={'Password'}
                             secureTextEntry={true}
