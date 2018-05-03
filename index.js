@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text } from 'react-native';
+import React from 'react';
+import { AppRegistry } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import loginScreen from './src/screens/login';
