@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 
+import ErrorDialog from '../components/errorDialog';
+
 import { register } from '../lib/api';
 
 class SignUpScreen extends Component {
@@ -35,7 +37,17 @@ class SignUpScreen extends Component {
         if (!registered.error) {
             this.props.navigation.navigate('Tabs');
         } else {
-            console.log(registered);
+            this.setState(
+                {
+                    hasError: true,
+                    errorTitle: registered.error.message
+                },
+                () => {
+                    this.setState({
+                        hasError: false
+                    });
+                }
+            );
         }
     };
 
@@ -58,7 +70,7 @@ class SignUpScreen extends Component {
                             autoCapitalize={'none'}
                         />
                         <Input
-                            placeholder={'Password'}
+                            placeholder={'Password (min 6 chars)'}
                             secureTextEntry={true}
                             onChangeText={text => this.setState({ password: text })}
                         />
@@ -81,6 +93,11 @@ class SignUpScreen extends Component {
                     />
                     <Text style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
+                <ErrorDialog
+                    title={this.state.errorTitle}
+                    message={this.state.errorMessage}
+                    visible={this.state.hasError}
+                />
             </KeyboardAvoidingView>
         );
     }

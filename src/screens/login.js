@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    ScrollView,
+    Platform,
+    Alert
+} from 'react-native';
 
 import { Input } from '../../src/components/textInput';
 import { COLORS, SIZES } from '../../src/lib/theme';
 import { login } from '../lib/api';
+import ErrorDialog from '../components/errorDialog';
 
 class LoginScreen extends Component {
     static propTypes = {
@@ -23,13 +33,33 @@ class LoginScreen extends Component {
 
     onLoginPress = async () => {
         if (!this.state.email || !this.state.password) {
-            console.log('empty email or password');
+            this.setState(
+                {
+                    hasError: true,
+                    errorTitle: 'Empty email or password'
+                },
+                () => {
+                    this.setState({
+                        hasError: false
+                    });
+                }
+            );
         } else {
             const loggedIn = await login(this.state);
             if (!loggedIn.error) {
                 this.props.navigation.navigate('Tabs');
             } else {
-                console.log(loggedIn);
+                this.setState(
+                    {
+                        hasError: true,
+                        errorTitle: loggedIn.error.message
+                    },
+                    () => {
+                        this.setState({
+                            hasError: false
+                        });
+                    }
+                );
             }
         }
     };
@@ -71,6 +101,11 @@ class LoginScreen extends Component {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                <ErrorDialog
+                    title={this.state.errorTitle}
+                    message={this.state.errorMessage}
+                    visible={this.state.hasError}
+                />
             </KeyboardAvoidingView>
         );
     }
