@@ -6,6 +6,8 @@ import chatRoomsScreen from './src/screens/chatRooms';
 
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
+console.disableYellowBox = true;
+
 const membersNavigator = createStackNavigator({
     MembersList: {
         screen: membersScreen,
