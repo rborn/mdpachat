@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Platform } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 
-import { COLORS, SIZES } from '../../src/lib/theme';
-
-import { users } from '../lib/users';
+import { COLORS } from '../lib/theme';
+import { watchUsers } from '../lib/api';
 
 class MembersScreen extends Component {
+    state = {
+        members: []
+    };
+    componentDidMount() {
+        watchUsers(members => {
+            this.setState({ members });
+        });
+    }
     render() {
         return (
             <FlatList
                 style={styles.flatList}
-                data={users}
+                data={this.state.members}
                 keyExtractor={(item, idx) => {
                     return `userItem_${idx}`;
                 }}
                 renderItem={({ item }) => {
                     return (
                         <View style={styles.listItem}>
-                            <Image style={styles.userAvatar} source={{ uri: item.picture }} />
+                            <Image style={styles.userAvatar} source={{ uri: item.photo }} />
                             <Text style={styles.userName}>{`${item.name}`}</Text>
                             <Text style={styles.userDescription} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {`${item.about}`}
+                                {`${item.description || ''}`}
                             </Text>
                         </View>
                     );

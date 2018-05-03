@@ -1,4 +1,5 @@
 import firebase from 'react-native-firebase';
+import _ from 'lodash';
 
 const login = async ({ email, password }) => {
     try {
@@ -35,4 +36,18 @@ const updateUser = async ({ name, photo, description, userId }) => {
     }
 };
 
-export { login, register, updateUser };
+const watchUsers = callback => {
+    firebase
+        .database()
+        .ref(`users`)
+        .on('value', snapshot => {
+            const res = snapshot.val();
+            const members = _.map(res, (value, idx) => {
+                value.userId = idx;
+                return value;
+            });
+            callback(members);
+        });
+};
+
+export { login, register, updateUser, watchUsers };
