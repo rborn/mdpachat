@@ -43,6 +43,7 @@ class LoginScreen extends Component {
                     style={styles.scrollview}
                     contentContainerStyle={styles.scrollContainer}
                     showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps={'handled'}
                 >
                     <View style={styles.wrapper}>
                         <Text style={styles.title}>login</Text>
