@@ -10,52 +10,82 @@ import chatRoomsScreen from './src/screens/chatRooms';
 import chat from './src/screens/chat';
 import userProfile from './src/screens/userProfile';
 
+import { COLORS } from './src/lib/theme';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 console.disableYellowBox = true;
 
-const membersNavigator = createStackNavigator({
-    MembersList: {
-        screen: membersScreen,
-        navigationOptions: {
-            title: 'Members'
+const membersNavigator = createStackNavigator(
+    {
+        MembersList: {
+            screen: membersScreen,
+            navigationOptions: {
+                title: 'Members'
+            }
+        },
+        UserProfile: {
+            screen: userProfile
         }
     },
-    UserProfile: {
-        screen: userProfile
+    {
+        navigationOptions: {
+            headerTintColor: COLORS.primary,
+            headerPressColorAndroid: COLORS.primary,
+            headerTitleStyle: {
+                color: COLORS.darkText
+            }
+        }
     }
-});
+);
 
-const chatRoomsNavigator = createStackNavigator({
-    ChatRoomsList: {
-        screen: chatRoomsScreen,
-        navigationOptions: {
-            title: 'Rooms'
+const chatRoomsNavigator = createStackNavigator(
+    {
+        ChatRoomsList: {
+            screen: chatRoomsScreen,
+            navigationOptions: {
+                title: 'Rooms'
+            }
+        },
+        Chat: {
+            screen: chat
         }
     },
-    Chat: {
-        screen: chat
+    {
+        navigationOptions: {
+            headerTintColor: COLORS.primary,
+            headerPressColorAndroid: COLORS.primary,
+            headerTitleStyle: {
+                color: COLORS.darkText
+            }
+        }
     }
-});
+);
 
-const tabNavigator = createBottomTabNavigator({
-    Members: {
-        screen: membersNavigator,
-        navigationOptions: {
-            tabBarIcon: ({ focused, tintColor }) => (
-                <Icon name={focused ? 'ios-people' : 'ios-people-outline'} color={tintColor} size={28} />
-            )
+const tabNavigator = createBottomTabNavigator(
+    {
+        Members: {
+            screen: membersNavigator,
+            navigationOptions: {
+                tabBarIcon: ({ focused, tintColor }) => (
+                    <Icon name={focused ? 'ios-people' : 'ios-people-outline'} color={tintColor} size={28} />
+                )
+            }
+        },
+        ChatRooms: {
+            screen: chatRoomsNavigator,
+            navigationOptions: {
+                tabBarIcon: ({ focused, tintColor }) => (
+                    <Icon name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} color={tintColor} size={28} />
+                )
+            }
         }
     },
-    ChatRooms: {
-        screen: chatRoomsNavigator,
-        navigationOptions: {
-            tabBarIcon: ({ focused, tintColor }) => (
-                <Icon name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} color={tintColor} size={28} />
-            )
+    {
+        tabBarOptions: {
+            activeTintColor: COLORS.primary
         }
     }
-});
+);
 
 const authNavigator = createStackNavigator(
     {
