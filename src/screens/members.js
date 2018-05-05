@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
 import { COLORS } from '../lib/theme';
 import { watchUsers } from '../lib/api';
@@ -28,7 +28,7 @@ class MembersScreen extends Component {
                 }}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableHighlight
+                        <TouchableOpacity
                             onPress={() => {
                                 this.onUserPress(item);
                             }}
@@ -40,7 +40,7 @@ class MembersScreen extends Component {
                                     {`${item.description || ''}`}
                                 </Text>
                             </View>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     );
                 }}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
