@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Input } from '../../src/components/textInput';
-import { COLORS, SIZES } from '../../src/lib/theme';
+import { Input } from '../components/textInput';
+import { COLORS, SIZES } from '../lib/theme';
 
 import ErrorDialog from '../components/errorDialog';
 

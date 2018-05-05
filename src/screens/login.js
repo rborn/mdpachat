@@ -12,8 +12,8 @@ import {
     Alert
 } from 'react-native';
 
-import { Input } from '../../src/components/textInput';
-import { COLORS, SIZES } from '../../src/lib/theme';
+import { Input } from '../components/textInput';
+import { COLORS, SIZES } from '../lib/theme';
 import { login } from '../lib/api';
 import ErrorDialog from '../components/errorDialog';
 

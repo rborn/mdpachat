@@ -1,0 +1,123 @@
+import React from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import loginScreen from './screens/login';
+import signupScreen from './screens/signUp';
+import membersScreen from './screens/members';
+import chatRoomsScreen from './screens/chatRooms';
+
+import chat from './screens/chat';
+import userProfile from './screens/userProfile';
+
+import { COLORS } from './lib/theme';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+
+console.disableYellowBox = true;
+
+const membersNavigator = createStackNavigator(
+    {
+        MembersList: {
+            screen: membersScreen,
+            navigationOptions: {
+                title: 'Members'
+            }
+        },
+        UserProfile: {
+            screen: userProfile
+        }
+    },
+    {
+        navigationOptions: {
+            headerTintColor: COLORS.primary,
+            headerPressColorAndroid: COLORS.primary,
+            headerTitleStyle: {
+                color: COLORS.darkText
+            }
+        }
+    }
+);
+
+const chatRoomsNavigator = createStackNavigator(
+    {
+        ChatRoomsList: {
+            screen: chatRoomsScreen,
+            navigationOptions: {
+                title: 'Rooms'
+            }
+        },
+        Chat: {
+            screen: chat
+        }
+    },
+    {
+        navigationOptions: {
+            headerTintColor: COLORS.primary,
+            headerPressColorAndroid: COLORS.primary,
+            headerTitleStyle: {
+                color: COLORS.darkText
+            }
+        }
+    }
+);
+
+const tabNavigator = createBottomTabNavigator(
+    {
+        Members: {
+            screen: membersNavigator,
+            navigationOptions: {
+                tabBarIcon: ({ focused, tintColor }) => (
+                    <Icon name={focused ? 'ios-people' : 'ios-people-outline'} color={tintColor} size={28} />
+                )
+            }
+        },
+        ChatRooms: {
+            screen: chatRoomsNavigator,
+            navigationOptions: {
+                tabBarIcon: ({ focused, tintColor }) => (
+                    <Icon name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} color={tintColor} size={28} />
+                )
+            }
+        }
+    },
+    {
+        tabBarOptions: {
+            activeTintColor: COLORS.primary
+        }
+    }
+);
+
+const authNavigator = createStackNavigator(
+    {
+        Login: {
+            screen: loginScreen
+        },
+        Signup: {
+            screen: signupScreen
+        }
+    },
+    {
+        headerMode: 'none',
+        initialRouteName: 'Login'
+    }
+);
+
+const rootNavigator = createStackNavigator(
+    {
+        Auth: {
+            screen: authNavigator
+        },
+        Tabs: {
+            screen: tabNavigator,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
+        }
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
+        initialRouteName: 'Auth'
+    }
+);
+
+export default rootNavigator;

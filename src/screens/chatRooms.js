@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
-import { COLORS } from '../../src/lib/theme';
+import { COLORS } from '../lib/theme';
 
 import { rooms } from '../lib/chat';
 
