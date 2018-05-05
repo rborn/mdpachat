@@ -1,7 +1,26 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, ScrollView, Image } from 'react-native';
+
+import { COLORS, SIZES } from '../../src/lib/theme';
+
+const headerImages = [
+    require(`../images/header_pics/0.jpg`),
+    require(`../images/header_pics/1.jpg`),
+    require(`../images/header_pics/2.jpg`),
+    require(`../images/header_pics/3.jpg`),
+    require(`../images/header_pics/4.jpg`),
+    require(`../images/header_pics/5.jpg`)
+];
 
 class UserProfile extends Component {
+    constructor(props) {
+        super(props);
+        this.state.user = this.props.navigation.state.params;
+        this.state.headerImage = headerImages[this.state.user.name.length % 6];
+    }
+
+    state = {};
+
     static navigationOptions = ({ navigation }) => {
         const { params } = navigation.state;
 
@@ -11,11 +30,52 @@ class UserProfile extends Component {
     };
     render() {
         return (
-            <View>
-                <Text>UserProfile</Text>
-            </View>
+            <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContainer}>
+                <Image style={styles.headerImage} source={this.state.headerImage} />
+                <Image style={styles.userAvatar} source={{ uri: this.state.user.photo }} />
+
+                <Text style={styles.userName}>{this.state.user.name}</Text>
+                <Text style={styles.userDescription}>{this.state.user.description}</Text>
+            </ScrollView>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    scrollView: {
+        backgroundColor: COLORS.screenBackground
+    },
+    scrollContainer: {
+        backgroundColor: COLORS.screenBackground,
+        alignItems: 'center',
+        flexGrow: 1
+    },
+    headerImage: {
+        width: SIZES.screenWidth,
+        height: SIZES.screenWidth * 0.6,
+        top: 0,
+        position: 'absolute'
+    },
+    userAvatar: {
+        width: 80,
+        height: 80,
+        marginTop: SIZES.screenWidth * 0.6 - 40,
+
+        borderRadius: 40,
+        borderWidth: 2,
+        borderColor: COLORS.primary
+    },
+    userName: {
+        marginTop: 20,
+        fontWeight: 'bold',
+        fontSize: 16,
+        color: COLORS.primaryText
+    },
+    userDescription: {
+        margin: 20,
+        fontSize: 14,
+        color: COLORS.darkText
+    }
+});
 
 export default UserProfile;

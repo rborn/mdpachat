@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const COLORS = {
     primary: '#19A5E4',
@@ -16,6 +16,8 @@ const COLORS = {
     lightBackground: '#999'
 };
 const SIZES = {
+    screenWidth: width,
+    screenHeight: height,
     margin: 10,
     padding: 5,
     loginSignupInputBorderRadius: 10,
