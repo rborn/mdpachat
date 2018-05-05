@@ -12,10 +12,10 @@ import {
     Alert
 } from 'react-native';
 
-import { Input } from '../components/textInput';
-import { COLORS, SIZES } from '../lib/theme';
-import { login } from '../lib/api';
-import ErrorDialog from '../components/errorDialog';
+import { Input } from '@components/textInput';
+import { COLORS, SIZES } from '@lib/theme';
+import { login } from '@lib/api';
+import ErrorDialog from '@components/errorDialog';
 
 class LoginScreen extends Component {
     static propTypes = {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
-import { COLORS } from '../lib/theme';
+import { COLORS } from '@lib/theme';
 
-import { rooms } from '../lib/chat';
+import { rooms } from '@lib/chat';
 
 class ChatRoomsScreen extends Component {
     onChatRoomPress = chatRoom => {

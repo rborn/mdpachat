@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Input } from '../components/textInput';
-import { COLORS, SIZES } from '../lib/theme';
+import { Input } from '@components/textInput';
+import { COLORS, SIZES } from '@lib/theme';
 
-import ErrorDialog from '../components/errorDialog';
+import ErrorDialog from '@components/errorDialog';
 
-import { register } from '../lib/api';
+import { register } from '@lib/api';
 
 class SignUpScreen extends Component {
     static propTypes = {

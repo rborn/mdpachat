@@ -1,15 +1,15 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import loginScreen from './screens/login';
-import signupScreen from './screens/signUp';
-import membersScreen from './screens/members';
-import chatRoomsScreen from './screens/chatRooms';
+import loginScreen from '@screens/login';
+import signupScreen from '@screens/signUp';
+import membersScreen from '@screens/members';
+import chatRoomsScreen from '@screens/chatRooms';
 
-import chat from './screens/chat';
-import userProfile from './screens/userProfile';
+import chat from '@screens/chat';
+import userProfile from '@screens/userProfile';
 
-import { COLORS } from './lib/theme';
+import { COLORS } from '@lib/theme';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 console.disableYellowBox = true;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import { COLORS } from '../lib/theme';
-import { watchUsers } from '../lib/api';
+import { COLORS } from '@lib/theme';
+import { watchUsers } from '@lib/api';
 
 class MembersScreen extends Component {
     state = {

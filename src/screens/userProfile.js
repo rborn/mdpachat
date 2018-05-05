@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, ScrollView, Image } from 'react-native';
 
-import { COLORS, SIZES } from '../lib/theme';
+import { COLORS, SIZES } from '@lib/theme';
 
 const headerImages = [
-    require(`../images/header_pics/0.jpg`),
-    require(`../images/header_pics/1.jpg`),
-    require(`../images/header_pics/2.jpg`),
-    require(`../images/header_pics/3.jpg`),
-    require(`../images/header_pics/4.jpg`),
-    require(`../images/header_pics/5.jpg`)
+    require(`@images/header_pics/0.jpg`),
+    require(`@images/header_pics/1.jpg`),
+    require(`@images/header_pics/2.jpg`),
+    require(`@images/header_pics/3.jpg`),
+    require(`@images/header_pics/4.jpg`),
+    require(`@images/header_pics/5.jpg`)
 ];
 
 class UserProfile extends Component {
