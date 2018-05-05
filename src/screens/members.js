@@ -4,13 +4,20 @@ import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react
 import { COLORS } from '@lib/theme';
 import { watchUsers } from '@lib/api';
 
+import _ from 'lodash';
+
 class MembersScreen extends Component {
     state = {
         members: []
     };
     componentDidMount() {
-        watchUsers(members => {
-            this.setState({ members });
+        watchUsers(users => {
+            const members = _.map(users, (value, idx) => {
+                value.userId = idx;
+                return value;
+            });
+
+            this.setState({ members: members });
         });
     }
 

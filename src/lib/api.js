@@ -41,13 +41,22 @@ const watchUsers = callback => {
         .database()
         .ref(`users`)
         .on('value', snapshot => {
+            const members = snapshot.val();
+            callback(members);
+        });
+};
+
+const watchMessages = callback => {
+    firebase
+        .database()
+        .ref(`messages`)
+        .on('value', snapshot => {
             const res = snapshot.val();
-            const members = _.map(res, (value, idx) => {
-                value.userId = idx;
+            const members = _.map(res, value => {
                 return value;
             });
             callback(members);
         });
 };
 
-export { login, register, updateUser, watchUsers };
+export { login, register, updateUser, watchUsers, watchMessages };
