@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableHighlight } from 'react-native';
 
 import { COLORS } from '../lib/theme';
 import { watchUsers } from '../lib/api';
@@ -13,6 +13,11 @@ class MembersScreen extends Component {
             this.setState({ members });
         });
     }
+
+    onUserPress = user => {
+        this.props.navigation.navigate('UserProfile', user);
+    };
+
     render() {
         return (
             <FlatList
@@ -23,13 +28,19 @@ class MembersScreen extends Component {
                 }}
                 renderItem={({ item }) => {
                     return (
-                        <View style={styles.listItem}>
-                            <Image style={styles.userAvatar} source={{ uri: item.photo }} />
-                            <Text style={styles.userName}>{`${item.name}`}</Text>
-                            <Text style={styles.userDescription} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {`${item.description || ''}`}
-                            </Text>
-                        </View>
+                        <TouchableHighlight
+                            onPress={() => {
+                                this.onUserPress(item);
+                            }}
+                        >
+                            <View style={styles.listItem}>
+                                <Image style={styles.userAvatar} source={{ uri: item.photo }} />
+                                <Text style={styles.userName}>{`${item.name}`}</Text>
+                                <Text style={styles.userDescription} numberOfLines={1} ellipsizeMode={'tail'}>
+                                    {`${item.description || ''}`}
+                                </Text>
+                            </View>
+                        </TouchableHighlight>
                     );
                 }}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}

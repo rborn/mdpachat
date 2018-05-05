@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
 import { COLORS } from '../../src/lib/theme';
 
 import { rooms } from '../lib/chat';
 
 class ChatRoomsScreen extends Component {
+    onChatRoomPress = chatRoom => {
+        this.props.navigation.navigate('Chat', chatRoom);
+    };
+
     render() {
         return (
             <FlatList
@@ -16,10 +20,16 @@ class ChatRoomsScreen extends Component {
                 }}
                 renderItem={({ item }) => {
                     return (
-                        <View style={styles.listItem}>
-                            <Text style={styles.name}>{`${item.name}`}</Text>
-                            <Text style={styles.time}>{`${item.lastMessageTime}`}</Text>
-                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.onChatRoomPress(item);
+                            }}
+                        >
+                            <View style={styles.listItem}>
+                                <Text style={styles.name}>{`${item.name}`}</Text>
+                                <Text style={styles.time}>{`${item.lastMessageTime}`}</Text>
+                            </View>
+                        </TouchableOpacity>
                     );
                 }}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}

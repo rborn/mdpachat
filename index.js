@@ -7,6 +7,9 @@ import signupScreen from './src/screens/signUp';
 import membersScreen from './src/screens/members';
 import chatRoomsScreen from './src/screens/chatRooms';
 
+import chat from './src/screens/chat';
+import userProfile from './src/screens/userProfile';
+
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 console.disableYellowBox = true;
@@ -17,6 +20,9 @@ const membersNavigator = createStackNavigator({
         navigationOptions: {
             title: 'Members'
         }
+    },
+    UserProfile: {
+        screen: userProfile
     }
 });
 
@@ -26,6 +32,9 @@ const chatRoomsNavigator = createStackNavigator({
         navigationOptions: {
             title: 'Rooms'
         }
+    },
+    Chat: {
+        screen: chat
     }
 });
 
