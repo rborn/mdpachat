@@ -192,7 +192,6 @@ const styles = StyleSheet.create({
     photo: {
         borderRadius: 10,
         overflow: 'hidden',
-        backgroundColor: COLORS.secondary,
         width: SIZES.screenWidth * 0.65,
         height: SIZES.screenWidth * 0.65 * 0.75
     },
