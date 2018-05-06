@@ -8,14 +8,16 @@ import {
     TextInput,
     TouchableOpacity,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    CameraRoll
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '@lib/theme';
-import { watchMessages, watchUsers, sendTextMessage } from '@lib/api';
+import { watchMessages, watchUsers, sendTextMessage, getLastCameraRollPhoto, sendPhotoMessage } from '@lib/api';
 
 import _ from 'lodash';
+import { SIZES } from '../lib/theme';
 
 class Chat extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -35,7 +37,6 @@ class Chat extends Component {
 
     async componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
-            console.log(user);
             this.setState({ currentUserId: user.uid });
         });
 
@@ -53,6 +54,15 @@ class Chat extends Component {
             userId: this.state.currentUserId
         });
         this.setState({ newMessage: null });
+    };
+
+    sendLastPhoto = async () => {
+        const lastImage = await getLastCameraRollPhoto();
+        console.log(lastImage);
+        sendPhotoMessage({
+            image: lastImage,
+            userId: this.state.currentUserId
+        });
     };
 
     render() {
@@ -75,12 +85,23 @@ class Chat extends Component {
 
                         const isOwnMessage = item.userId == this.state.currentUserId;
 
+                        console.log(item.photoUrl);
                         return (
                             <View style={[styles.listItem, isOwnMessage ? styles.ownItem : styles.othersItem]}>
                                 <Image style={styles.userAvatar} source={{ uri: userPhoto }} />
-                                <Text
-                                    style={[styles.message, isOwnMessage ? styles.ownMessage : styles.othersMessage]}
-                                >{`${item.text}`}</Text>
+                                {item.type == 'text' && (
+                                    <Text
+                                        style={[
+                                            styles.message,
+                                            isOwnMessage ? styles.ownMessage : styles.othersMessage
+                                        ]}
+                                    >{`${item.text}`}</Text>
+                                )}
+                                {item.type == 'photo' && (
+                                    <View style={[styles.photo, isOwnMessage ? styles.ownPhoto : styles.othersPhoto]}>
+                                        <Image style={styles.image} source={{ uri: item.photoUrl }} />
+                                    </View>
+                                )}
                             </View>
                         );
                     }}
@@ -88,6 +109,10 @@ class Chat extends Component {
                     keyboardShouldPersistTaps={'handled'}
                 />
                 <View style={styles.sendWrapper}>
+                    <TouchableOpacity onPress={this.sendLastPhoto}>
+                        <Icon style={styles.sendButton} name={'ios-camera-outline'} size={40} color={COLORS.primary} />
+                    </TouchableOpacity>
+
                     <TextInput
                         style={styles.sendInput}
                         placeholderTextColor={COLORS.lightText}
@@ -168,6 +193,28 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.secondary,
         color: COLORS.darkText
     },
+    photo: {
+        borderRadius: 10,
+        overflow: 'hidden',
+        backgroundColor: COLORS.secondary,
+        width: SIZES.screenWidth * 0.65,
+        height: SIZES.screenWidth * 0.65 * 0.75
+    },
+    image: {
+        width: SIZES.screenWidth * 0.65,
+        height: SIZES.screenWidth * 0.65 * 0.75
+    },
+    ownPhoto: {
+        marginLeft: 30,
+        marginRight: 5,
+        backgroundColor: COLORS.primary
+    },
+    othersPhoto: {
+        marginLeft: 5,
+        marginRight: 30,
+        backgroundColor: COLORS.secondary
+    },
+
     flatList: {
         backgroundColor: COLORS.screenBackground
     }

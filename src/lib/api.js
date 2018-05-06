@@ -1,5 +1,15 @@
+import { CameraRoll } from 'react-native';
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
+
+const getLastCameraRollPhoto = async () => {
+    const photos = await CameraRoll.getPhotos({
+        first: 1,
+        assetType: 'Photos'
+    });
+
+    return photos.edges[0].node.image;
+};
 
 const login = async ({ email, password }) => {
     try {
@@ -52,18 +62,53 @@ const watchMessages = callback => {
         .ref(`messages`)
         .on('value', snapshot => {
             const res = snapshot.val();
-            const messages = _.map(res, value => {
-                return value;
-            });
+
+            const messages = _.chain(res)
+                .map(item => {
+                    return item;
+                })
+                .sortBy(['timestamp'])
+                .reverse()
+                .value();
+
             callback(messages);
         });
 };
 
 const sendTextMessage = ({ text, userId }) => {
+    const timestamp = firebase.database().getServerTime();
     firebase
         .database()
         .ref(`messages`)
-        .push({ type: 'text', text, userId });
+        .push({ type: 'text', text, userId, timestamp });
 };
 
-export { login, register, updateUser, watchUsers, watchMessages, sendTextMessage };
+const uploadMessagePhoto = async ({ image, userId, timestamp }) => {
+    const ref = firebase.storage().ref(`messages/${userId}/${timestamp}_${image.filename}`);
+
+    const uploadResult = await ref.putFile(image.uri);
+    image.contentType && ref.updateMetadata({ contentType: image.contentType });
+
+    return uploadResult.downloadURL;
+};
+
+const sendPhotoMessage = async ({ image, userId }) => {
+    const timestamp = firebase.database().getServerTime();
+    const photoUrl = await uploadMessagePhoto({ image, userId, timestamp });
+
+    firebase
+        .database()
+        .ref(`messages`)
+        .push({ type: 'photo', photoUrl, userId, timestamp });
+};
+
+export {
+    login,
+    register,
+    updateUser,
+    watchUsers,
+    watchMessages,
+    sendTextMessage,
+    sendPhotoMessage,
+    getLastCameraRollPhoto
+};
