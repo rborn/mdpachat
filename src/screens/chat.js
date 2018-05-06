@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -8,15 +8,13 @@ import {
     TextInput,
     TouchableOpacity,
     KeyboardAvoidingView,
-    Platform,
-    CameraRoll
+    Platform
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '@lib/theme';
 import { watchMessages, watchUsers, sendTextMessage, getLastCameraRollPhoto, sendPhotoMessage } from '@lib/api';
 
-import _ from 'lodash';
 import { SIZES } from '../lib/theme';
 
 class Chat extends Component {
@@ -58,7 +56,6 @@ class Chat extends Component {
 
     sendLastPhoto = async () => {
         const lastImage = await getLastCameraRollPhoto();
-        console.log(lastImage);
         sendPhotoMessage({
             image: lastImage,
             userId: this.state.currentUserId
@@ -85,7 +82,6 @@ class Chat extends Component {
 
                         const isOwnMessage = item.userId == this.state.currentUserId;
 
-                        console.log(item.photoUrl);
                         return (
                             <View style={[styles.listItem, isOwnMessage ? styles.ownItem : styles.othersItem]}>
                                 <Image style={styles.userAvatar} source={{ uri: userPhoto }} />
