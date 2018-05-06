@@ -18,6 +18,9 @@ class Input extends Component {
             <TextInput
                 style={styles.input}
                 {...this.props}
+                // the ... (spread) operator will split all props we send as props to TextInput
+                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+
                 placeholderTextColor={COLORS.lightText}
                 underlineColorAndroid={'transparent'}
             />

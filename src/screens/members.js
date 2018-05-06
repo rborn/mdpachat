@@ -12,6 +12,7 @@ class MembersScreen extends Component {
     };
     componentDidMount() {
         watchUsers(users => {
+            // we start watching for the users list - see api.js files
             const members = _.map(users, (value, idx) => {
                 value.userId = idx;
                 return value;
@@ -29,8 +30,10 @@ class MembersScreen extends Component {
         return (
             <FlatList
                 style={styles.flatList}
-                data={this.state.members}
+                data={this.state.members} // everytime the data changes we re-render the list
                 keyExtractor={(item, idx) => {
+                    // The keyExtractor gives us an unique key for the list cells for caching/recycling
+                    // https://facebook.github.io/react-native/docs/flatlist.html#keyextractor
                     return `userItem_${idx}`;
                 }}
                 renderItem={({ item }) => {

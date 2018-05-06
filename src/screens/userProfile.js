@@ -4,6 +4,7 @@ import { StyleSheet, Text, ScrollView, Image } from 'react-native';
 import { COLORS, SIZES } from '@lib/theme';
 
 const headerImages = [
+    // we need to load all local images first as we cannot call them dynamically eg: require(`@images/header_pics/${idx}.jpg`),
     require(`@images/header_pics/0.jpg`),
     require(`@images/header_pics/1.jpg`),
     require(`@images/header_pics/2.jpg`),
@@ -16,12 +17,16 @@ class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.state.user = this.props.navigation.state.params;
-        this.state.headerImage = headerImages[this.state.user.name.length % 6];
+        this.state.headerImage = headerImages[this.state.user.name.length % headerImages.length];
+        // we determine a header image depending on the name length and the % (remainder) operator based on the number of static photos we have
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Remainder_()
     }
 
     state = {};
 
     static navigationOptions = ({ navigation }) => {
+        // we need to determine the title of the screen based on the user we display
+        // https://v2.reactnavigation.org/docs/en/headers.html#setting-the-header-title
         const { params } = navigation.state;
 
         return {

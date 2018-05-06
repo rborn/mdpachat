@@ -1,19 +1,24 @@
 import { CameraRoll } from 'react-native';
+// https://facebook.github.io/react-native/docs/cameraroll.html
+// keep in mind that the CameraRoll needs to be linked in the native progect first.
+// This is a good read article: https://www.codementor.io/blessingoraz/access-camera-roll-with-react-native-9uwupuuy0
+
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
 
 const getLastCameraRollPhoto = async () => {
+    // get only the last image, CameraRoll doesn't give us an UI but just a list of photos
     const photos = await CameraRoll.getPhotos({
         first: 1,
         assetType: 'Photos'
     });
 
-    return photos.edges[0].node.image;
+    return photos.edges[0].node.image; // TODO handle error cases (like permission denied or no image in gallery)
 };
 
 const login = async ({ email, password }) => {
     try {
-        await firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password);
+        await firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password); // https://rnfirebase.io/docs/v4.0.x/auth/reference/auth#signInAndRetrieveDataWithEmailAndPassword
         return firebase.auth().currentUser.toJSON();
     } catch (error) {
         return { error };
@@ -23,7 +28,11 @@ const login = async ({ email, password }) => {
 const register = async ({ email, password, name }) => {
     try {
         await firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password);
-        const currentUser = firebase.auth().currentUser.toJSON();
+        // https://rnfirebase.io/docs/v4.0.x/auth/reference/auth#createUserWithEmailAndPassword
+
+        const currentUser = firebase.auth().currentUser.toJSON(); // this is the current user we logged in with
+        // https://rnfirebase.io/docs/v4.0.x/auth/reference/auth#currentUser
+        // after we register we update the user database with the user Id returned by firebase
         await updateUser({ name, userId: currentUser.uid });
         return currentUser;
     } catch (error) {
@@ -32,6 +41,7 @@ const register = async ({ email, password, name }) => {
 };
 
 const updateUser = async ({ name, photo, description, userId }) => {
+    // Keep in mind we decided to keep the users in a separate database from the auth to be able to add more attributes to them (description, etc)
     try {
         return await firebase
             .database()
@@ -51,6 +61,8 @@ const watchUsers = callback => {
         .database()
         .ref(`users`)
         .on('value', snapshot => {
+            //https://rnfirebase.io/docs/v4.0.x/database/reference/Reference#on
+            // the value event triggers everytime we change the database (add/delete/update a message in it)
             const members = snapshot.val();
             callback(members);
         });
@@ -62,12 +74,16 @@ const watchMessages = callback => {
         .ref(`messages`)
         .on('value', snapshot => {
             const res = snapshot.val();
-
+            // the messages are stored as an object in firebase, so we need to map them to an array to populate the FlatList:
+            // https://facebook.github.io/react-native/docs/flatlist.html#data
             const messages = _.chain(res)
                 .map(item => {
                     return item;
                 })
                 .sortBy(['timestamp'])
+                // We add a timestamp on the message creation, which is the Firebase timestamp so we know the order of the messages
+                // https://rnfirebase.io/docs/v4.0.x/database/reference/database#getServerTime
+
                 .reverse()
                 .value();
 
@@ -81,12 +97,15 @@ const sendTextMessage = ({ text, userId }) => {
         .database()
         .ref(`messages`)
         .push({ type: 'text', text, userId, timestamp });
+    // push message to database https://rnfirebase.io/docs/v4.0.x/database/reference/Reference#push
 };
 
 const uploadMessagePhoto = async ({ image, userId, timestamp }) => {
     const ref = firebase.storage().ref(`messages/${userId}/${timestamp}_${image.filename}`);
+    // we use the timestamp in the filename or firebase will replace the images with the same filename and  we won't be able to upload multiple times the same image
 
     const uploadResult = await ref.putFile(image.uri);
+    // upload image to firebase storage https://rnfirebase.io/docs/v4.0.x/storage/reference/Reference#putFile
     image.contentType && ref.updateMetadata({ contentType: image.contentType });
 
     return uploadResult.downloadURL;

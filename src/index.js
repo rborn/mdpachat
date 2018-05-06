@@ -2,6 +2,10 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import loginScreen from '@screens/login';
+
+// usage of scoped imports to avoid cumbersome folder navigation eg: '../src/screens/login.js'
+// https://docs.npmjs.com/getting-started/scoped-packages
+
 import signupScreen from '@screens/signUp';
 import membersScreen from '@screens/members';
 import chatRoomsScreen from '@screens/chatRooms';
@@ -12,9 +16,10 @@ import userProfile from '@screens/userProfile';
 import { COLORS } from '@lib/theme';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
-console.disableYellowBox = true;
+console.disableYellowBox = true; // Disable the yellow warning UI, we still can see the warnings in debugger
 
 const tabNavigator = createBottomTabNavigator(
+    // https://v2.reactnavigation.org/docs/en/bottom-tab-navigator.html
     {
         Members: {
             screen: membersScreen,
@@ -43,6 +48,7 @@ const tabNavigator = createBottomTabNavigator(
 );
 
 const innerNavigator = createStackNavigator(
+    // https://v2.reactnavigation.org/docs/en/stack-navigator.html
     {
         MainScreen: {
             screen: tabNavigator,
@@ -105,7 +111,7 @@ const rootNavigator = createStackNavigator(
     {
         headerMode: 'none',
         mode: 'modal',
-        initialRouteName: 'Tabs'
+        initialRouteName: 'Auth'
     }
 );
 

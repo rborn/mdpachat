@@ -15,11 +15,16 @@ class LoginScreen extends Component {
 
     state = {
         email: null,
-        password: null
+        password: null,
+        hasError: false, // this will handle the visibility of the ErrorDialog
+        errorTitle: null
     };
 
     onPressSignup = () => {
         this.props.navigation.navigate('Signup');
+        // we navigate to the Signup screen
+        // every screen component will receive "navigation" in the props from react-navigation:
+        // https://v2.reactnavigation.org/docs/en/navigation-prop.html
     };
 
     onLoginPress = async () => {
@@ -30,6 +35,7 @@ class LoginScreen extends Component {
                     errorTitle: 'Empty email or password'
                 },
                 () => {
+                    // We need this callback to set hasError back to false once the ErrorDialog is set to visible or it will display multiple times
                     this.setState({
                         hasError: false
                     });
@@ -56,7 +62,7 @@ class LoginScreen extends Component {
     };
 
     render() {
-        const behavior = Platform.OS == 'ios' ? 'padding' : null;
+        const behavior = Platform.OS == 'ios' ? 'padding' : null; // We set the behaviour of the KeyboardAvoidingView depending of the Platform
 
         return (
             <KeyboardAvoidingView style={styles.container} behavior={behavior}>
@@ -71,7 +77,7 @@ class LoginScreen extends Component {
 
                         <Input
                             placeholder={'Your Email'}
-                            onChangeText={text => this.setState({ email: text })}
+                            onChangeText={text => this.setState({ email: text })} // changing the value of the input text will chnage our state so we are able to use it in the onLoginPress method
                             autoCapitalize={'none'}
                             value={this.state.email}
                         />
