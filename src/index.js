@@ -6,7 +6,7 @@ import signupScreen from '@screens/signUp';
 import membersScreen from '@screens/members';
 import chatRoomsScreen from '@screens/chatRooms';
 
-import chat from '@screens/chat';
+import chatScreen from '@screens/chat';
 import userProfile from '@screens/userProfile';
 
 import { COLORS } from '@lib/theme';
@@ -14,65 +14,21 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 console.disableYellowBox = true;
 
-const membersNavigator = createStackNavigator(
-    {
-        MembersList: {
-            screen: membersScreen,
-            navigationOptions: {
-                title: 'Members'
-            }
-        },
-        UserProfile: {
-            screen: userProfile
-        }
-    },
-    {
-        navigationOptions: {
-            headerTintColor: COLORS.primary,
-            headerPressColorAndroid: COLORS.primary,
-            headerTitleStyle: {
-                color: COLORS.darkText
-            }
-        }
-    }
-);
-
-const chatRoomsNavigator = createStackNavigator(
-    {
-        ChatRoomsList: {
-            screen: chatRoomsScreen,
-            navigationOptions: {
-                title: 'Rooms'
-            }
-        },
-        Chat: {
-            screen: chat
-        }
-    },
-    {
-        navigationOptions: {
-            headerTintColor: COLORS.primary,
-            headerPressColorAndroid: COLORS.primary,
-            headerTitleStyle: {
-                color: COLORS.darkText
-            }
-        }
-    }
-);
-
 const tabNavigator = createBottomTabNavigator(
     {
         Members: {
-            screen: membersNavigator,
+            screen: membersScreen,
             navigationOptions: {
+                title: 'Members',
                 tabBarIcon: ({ focused, tintColor }) => (
                     <Icon name={focused ? 'ios-people' : 'ios-people-outline'} color={tintColor} size={28} />
                 )
             }
         },
-        ChatRooms: {
-            screen: chatRoomsNavigator,
+        Rooms: {
+            screen: chatRoomsScreen,
             navigationOptions: {
+                title: 'Rooms',
                 tabBarIcon: ({ focused, tintColor }) => (
                     <Icon name={focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline'} color={tintColor} size={28} />
                 )
@@ -82,6 +38,39 @@ const tabNavigator = createBottomTabNavigator(
     {
         tabBarOptions: {
             activeTintColor: COLORS.primary
+        }
+    }
+);
+
+const innerNavigator = createStackNavigator(
+    {
+        MainScreen: {
+            screen: tabNavigator,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
+        },
+        UserProfile: {
+            screen: userProfile
+        },
+        Chat: {
+            screen: chatScreen
+        }
+    },
+    {
+        navigationOptions: ({ navigation }) => {
+            const { state } = navigation;
+            let title;
+
+            if (state.routes) {
+                title = state.routes[navigation.state.index].routeName;
+            } else {
+                title = state.routeName;
+            }
+
+            return {
+                title: title
+            };
         }
     }
 );
@@ -107,7 +96,7 @@ const rootNavigator = createStackNavigator(
             screen: authNavigator
         },
         Tabs: {
-            screen: tabNavigator,
+            screen: innerNavigator,
             navigationOptions: {
                 gesturesEnabled: false
             }
