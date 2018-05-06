@@ -48,7 +48,7 @@ class Chat extends Component {
     render() {
         const behavior = Platform.OS == 'ios' ? 'padding' : null;
         return (
-            <KeyboardAvoidingView style={styles.container} behavior={behavior}>
+            <KeyboardAvoidingView style={styles.container} behavior={behavior} keyboardVerticalOffset={65}>
                 <FlatList
                     style={styles.flatList}
                     data={this.state.messages}
@@ -63,7 +63,6 @@ class Chat extends Component {
                             userPhoto = user.photo;
                         }
 
-                        console.log(this.state);
                         const isOwnMessage = item.userId == this.state.currentUserId;
 
                         return (
@@ -76,6 +75,7 @@ class Chat extends Component {
                         );
                     }}
                     inverted
+                    keyboardShouldPersistTaps={'handled'}
                 />
                 <View style={styles.sendWrapper}>
                     <TextInput
@@ -83,6 +83,8 @@ class Chat extends Component {
                         {...this.props}
                         placeholderTextColor={COLORS.lightText}
                         underlineColorAndroid={'transparent'}
+                        multiline
+                        textAlignVertical={'top'}
                     />
                     <TouchableOpacity>
                         <Icon style={styles.sendButton} name={'ios-send-outline'} size={40} color={COLORS.primary} />
