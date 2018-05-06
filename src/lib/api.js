@@ -52,11 +52,18 @@ const watchMessages = callback => {
         .ref(`messages`)
         .on('value', snapshot => {
             const res = snapshot.val();
-            const members = _.map(res, value => {
+            const messages = _.map(res, value => {
                 return value;
             });
-            callback(members);
+            callback(messages);
         });
 };
 
-export { login, register, updateUser, watchUsers, watchMessages };
+const sendTextMessage = ({ text, userId }) => {
+    firebase
+        .database()
+        .ref(`messages`)
+        .push({ type: 'text', text, userId });
+};
+
+export { login, register, updateUser, watchUsers, watchMessages, sendTextMessage };

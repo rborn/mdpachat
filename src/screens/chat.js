@@ -13,7 +13,7 @@ import {
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '@lib/theme';
-import { watchMessages, watchUsers } from '@lib/api';
+import { watchMessages, watchUsers, sendTextMessage } from '@lib/api';
 
 import _ from 'lodash';
 
@@ -28,7 +28,9 @@ class Chat extends Component {
 
     state = {
         messages: [],
-        members: []
+        members: [],
+        newMessage: null,
+        currentUserId: null
     };
 
     async componentDidMount() {
@@ -44,6 +46,14 @@ class Chat extends Component {
             this.setState({ members });
         });
     }
+
+    sendMessage = () => {
+        sendTextMessage({
+            text: this.state.newMessage,
+            userId: this.state.currentUserId
+        });
+        this.setState({ newMessage: null });
+    };
 
     render() {
         const behavior = Platform.OS == 'ios' ? 'padding' : null;
@@ -80,13 +90,14 @@ class Chat extends Component {
                 <View style={styles.sendWrapper}>
                     <TextInput
                         style={styles.sendInput}
-                        {...this.props}
                         placeholderTextColor={COLORS.lightText}
                         underlineColorAndroid={'transparent'}
                         multiline
                         textAlignVertical={'top'}
+                        onChangeText={text => this.setState({ newMessage: text })}
+                        value={this.state.newMessage}
                     />
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.sendMessage}>
                         <Icon style={styles.sendButton} name={'ios-send-outline'} size={40} color={COLORS.primary} />
                     </TouchableOpacity>
                 </View>
