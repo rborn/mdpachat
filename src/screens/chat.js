@@ -64,6 +64,10 @@ class Chat extends Component {
 
     render() {
         const behavior = Platform.OS == 'ios' ? 'padding' : null;
+        // behaviour: we need to scroll the view up so it doesn't render under the keyboard on ios; https://facebook.github.io/react-native/docs/keyboardavoidingview.html#behavior
+
+        //keyboardVerticalOffset: we need to compensate for the navigationbar heught or the input will render under the keyboard https://facebook.github.io/react-native/docs/keyboardavoidingview.html#keyboardverticaloffset
+
         return (
             <KeyboardAvoidingView style={styles.container} behavior={behavior} keyboardVerticalOffset={65}>
                 <FlatList
@@ -79,7 +83,6 @@ class Chat extends Component {
                         if (user && user.photo) {
                             userPhoto = user.photo;
                         }
-
                         const isOwnMessage = item.userId == this.state.currentUserId;
 
                         return (
