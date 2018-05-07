@@ -5,23 +5,13 @@ import { COLORS } from '@lib/theme';
 import { watchUsers } from '@lib/api';
 
 import _ from 'lodash';
+import { observer } from 'mobx-react/native';
 
+import currentUserStore from '@stores/user';
+import membersStore from '@stores/members';
+
+@observer
 class MembersScreen extends Component {
-    state = {
-        members: []
-    };
-    componentDidMount() {
-        watchUsers(users => {
-            // we start watching for the users list - see api.js files
-            const members = _.map(users, (value, idx) => {
-                value.userId = idx;
-                return value;
-            });
-
-            this.setState({ members: members });
-        });
-    }
-
     onUserPress = user => {
         this.props.navigation.navigate('UserProfile', user);
     };
@@ -30,20 +20,22 @@ class MembersScreen extends Component {
         return (
             <FlatList
                 style={styles.flatList}
-                data={this.state.members} // everytime the data changes we re-render the list
+                data={membersStore.dataAsArray} // everytime the data changes we re-render the list
                 keyExtractor={(item, idx) => {
                     // The keyExtractor gives us an unique key for the list cells for caching/recycling
                     // https://facebook.github.io/react-native/docs/flatlist.html#keyextractor
                     return `userItem_${idx}`;
                 }}
                 renderItem={({ item }) => {
+                    const isOwnUser = item.userId == currentUserStore.data.uid;
+
                     return (
                         <TouchableOpacity
                             onPress={() => {
                                 this.onUserPress(item);
                             }}
                         >
-                            <View style={styles.listItem}>
+                            <View style={[styles.listItem, isOwnUser ? styles.ownListItem : styles.otherListItem]}>
                                 <Image style={styles.userAvatar} source={{ uri: item.photo }} />
                                 <Text style={styles.userName}>{`${item.name}`}</Text>
                                 <Text style={styles.userDescription} numberOfLines={1} ellipsizeMode={'tail'}>
@@ -65,6 +57,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: COLORS.screenBackground
     },
+    ownListItem: {
+        backgroundColor: COLORS.secondary
+    },
+    otherListItem: {},
     userAvatar: {
         width: 50,
         height: 50,

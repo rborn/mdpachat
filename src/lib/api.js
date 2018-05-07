@@ -6,6 +6,8 @@ import { CameraRoll } from 'react-native';
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
 
+import currentUserStore from '@stores/user';
+
 const getLastCameraRollPhoto = async () => {
     // get only the last image, CameraRoll doesn't give us an UI but just a list of photos
     const photos = await CameraRoll.getPhotos({
@@ -19,7 +21,9 @@ const getLastCameraRollPhoto = async () => {
 const login = async ({ email, password }) => {
     try {
         await firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password); // https://rnfirebase.io/docs/v4.0.x/auth/reference/auth#signInAndRetrieveDataWithEmailAndPassword
-        return firebase.auth().currentUser.toJSON();
+        currentUserStore.data = firebase.auth().currentUser.toJSON();
+        currentUserStore.data.userId = currentUserStore.data.uid;
+        return currentUserStore.data;
     } catch (error) {
         return { error };
     }
@@ -30,11 +34,13 @@ const register = async ({ email, password, name }) => {
         await firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password);
         // https://rnfirebase.io/docs/v4.0.x/auth/reference/auth#createUserWithEmailAndPassword
 
-        const currentUser = firebase.auth().currentUser.toJSON(); // this is the current user we logged in with
+        currentUserStore.data = firebase.auth().currentUser.toJSON(); // this is the current user we logged in with
+
         // https://rnfirebase.io/docs/v4.0.x/auth/reference/auth#currentUser
         // after we register we update the user database with the user Id returned by firebase
-        await updateUser({ name, userId: currentUser.uid });
-        return currentUser;
+        currentUserStore.data.userId = currentUserStore.data.uid;
+        await updateUser({ name, userId: currentUserStore.data.userId });
+        return currentUserStore.data;
     } catch (error) {
         return { error };
     }
