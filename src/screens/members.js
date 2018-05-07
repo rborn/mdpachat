@@ -5,25 +5,13 @@ import { COLORS } from '@lib/theme';
 import { watchUsers } from '@lib/api';
 
 import _ from 'lodash';
+import { observer } from 'mobx-react/native';
 
 import currentUserStore from '@stores/user';
+import membersStore from '@stores/members';
 
+@observer
 class MembersScreen extends Component {
-    state = {
-        members: []
-    };
-    componentDidMount() {
-        watchUsers(users => {
-            // we start watching for the users list - see api.js files
-            const members = _.map(users, (value, idx) => {
-                value.userId = idx;
-                return value;
-            });
-
-            this.setState({ members: members });
-        });
-    }
-
     onUserPress = user => {
         this.props.navigation.navigate('UserProfile', user);
     };
@@ -32,7 +20,7 @@ class MembersScreen extends Component {
         return (
             <FlatList
                 style={styles.flatList}
-                data={this.state.members} // everytime the data changes we re-render the list
+                data={membersStore.dataAsArray} // everytime the data changes we re-render the list
                 keyExtractor={(item, idx) => {
                     // The keyExtractor gives us an unique key for the list cells for caching/recycling
                     // https://facebook.github.io/react-native/docs/flatlist.html#keyextractor

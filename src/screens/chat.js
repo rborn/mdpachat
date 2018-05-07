@@ -12,12 +12,23 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '@lib/theme';
-import { watchMessages, watchUsers, sendTextMessage, getLastCameraRollPhoto, sendPhotoMessage } from '@lib/api';
+import { sendTextMessage, getLastCameraRollPhoto, sendPhotoMessage } from '@lib/api';
 
+import { observer } from 'mobx-react/native';
 import { SIZES } from '../lib/theme';
 
 import currentUserStore from '@stores/user';
+import messagesStore from '@stores/messages';
+import membersStore from '@stores/members';
 
+// @observer
+// class Name extends Component {
+//     render() {
+//         return <Text>{membersStore.data[this.props.userId].name}</Text>;
+//     }
+// }
+
+@observer
 class Chat extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params } = navigation.state;
@@ -28,19 +39,8 @@ class Chat extends Component {
     };
 
     state = {
-        messages: [],
-        members: [],
         newMessage: null
     };
-
-    async componentDidMount() {
-        watchMessages(messages => {
-            this.setState({ messages });
-        });
-        watchUsers(members => {
-            this.setState({ members });
-        });
-    }
 
     sendMessage = () => {
         sendTextMessage({
@@ -60,19 +60,20 @@ class Chat extends Component {
 
     render() {
         const behavior = Platform.OS == 'ios' ? 'padding' : null;
+
         return (
             <KeyboardAvoidingView style={styles.container} behavior={behavior} keyboardVerticalOffset={65}>
                 <FlatList
                     style={styles.flatList}
-                    data={this.state.messages}
+                    data={messagesStore.data}
                     keyExtractor={(item, idx) => {
                         return `messageItem_${idx}`;
                     }}
                     renderItem={({ item }) => {
-                        const user = this.state.members[item.userId];
+                        const user = membersStore.data[item.userId];
 
-                        let userPhoto;
-                        if (user && user.photo) {
+                        let userPhoto = '';
+                        if (user && user.photo && user.photo != '') {
                             userPhoto = user.photo;
                         }
 
