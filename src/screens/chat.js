@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.secondary,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10
+        padding: 10,
+        bottom: 0
     },
     sendInput: {
         flex: 1,
@@ -144,7 +145,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: COLORS.screenBackground,
         borderColor: COLORS.lightBackground,
-        borderWidth: 1
+        borderWidth: 1,
+        borderRadius: 10
     },
     sendButton: {
         margin: 10
