@@ -10,12 +10,13 @@ import {
     KeyboardAvoidingView,
     Platform
 } from 'react-native';
-import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '@lib/theme';
 import { watchMessages, watchUsers, sendTextMessage, getLastCameraRollPhoto, sendPhotoMessage } from '@lib/api';
 
 import { SIZES } from '../lib/theme';
+
+import currentUserStore from '@stores/user';
 
 class Chat extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -29,15 +30,10 @@ class Chat extends Component {
     state = {
         messages: [],
         members: [],
-        newMessage: null,
-        currentUserId: null
+        newMessage: null
     };
 
     async componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-            this.setState({ currentUserId: user.uid });
-        });
-
         watchMessages(messages => {
             this.setState({ messages });
         });
@@ -49,7 +45,7 @@ class Chat extends Component {
     sendMessage = () => {
         sendTextMessage({
             text: this.state.newMessage,
-            userId: this.state.currentUserId
+            userId: currentUserStore.data.userId
         });
         this.setState({ newMessage: null });
     };
@@ -58,7 +54,7 @@ class Chat extends Component {
         const lastImage = await getLastCameraRollPhoto();
         sendPhotoMessage({
             image: lastImage,
-            userId: this.state.currentUserId
+            userId: currentUserStore.data.userId
         });
     };
 
@@ -80,7 +76,7 @@ class Chat extends Component {
                             userPhoto = user.photo;
                         }
 
-                        const isOwnMessage = item.userId == this.state.currentUserId;
+                        const isOwnMessage = item.userId == currentUserStore.data.userId;
 
                         return (
                             <View style={[styles.listItem, isOwnMessage ? styles.ownItem : styles.othersItem]}>

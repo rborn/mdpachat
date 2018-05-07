@@ -6,6 +6,8 @@ import { watchUsers } from '@lib/api';
 
 import _ from 'lodash';
 
+import currentUserStore from '@stores/user';
+
 class MembersScreen extends Component {
     state = {
         members: []
@@ -37,13 +39,15 @@ class MembersScreen extends Component {
                     return `userItem_${idx}`;
                 }}
                 renderItem={({ item }) => {
+                    const isOwnUser = item.userId == currentUserStore.data.uid;
+
                     return (
                         <TouchableOpacity
                             onPress={() => {
                                 this.onUserPress(item);
                             }}
                         >
-                            <View style={styles.listItem}>
+                            <View style={[styles.listItem, isOwnUser ? styles.ownListItem : styles.otherListItem]}>
                                 <Image style={styles.userAvatar} source={{ uri: item.photo }} />
                                 <Text style={styles.userName}>{`${item.name}`}</Text>
                                 <Text style={styles.userDescription} numberOfLines={1} ellipsizeMode={'tail'}>
@@ -65,6 +69,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: COLORS.screenBackground
     },
+    ownListItem: {
+        backgroundColor: COLORS.secondary
+    },
+    otherListItem: {},
     userAvatar: {
         width: 50,
         height: 50,
