@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     userAvatar: {
-        width: 80,
-        height: 80,
-        marginTop: SIZES.screenWidth * 0.6 - 40,
+        width: 140,
+        height: 140,
+        marginTop: SIZES.screenWidth * 0.6 - 70,
 
-        borderRadius: 40,
+        borderRadius: 70,
         borderWidth: 2,
         borderColor: COLORS.primary
     },
