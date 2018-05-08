@@ -15,6 +15,7 @@ import userProfile from '@screens/userProfile';
 
 import { COLORS } from '@lib/theme';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { checkPushEnabled } from '@lib/api';
 
 console.disableYellowBox = true; // Disable the yellow warning UI, we still can see the warnings in debugger
 
@@ -114,5 +115,7 @@ const rootNavigator = createStackNavigator(
         initialRouteName: 'Auth'
     }
 );
+
+checkPushEnabled();
 
 export default rootNavigator;

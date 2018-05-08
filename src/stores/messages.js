@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-import { watchMessages, watchUsers, sendTextMessage, getLastCameraRollPhoto, sendPhotoMessage } from '@lib/api';
+import { watchMessages } from '@lib/watchers';
 
 class MessagesStore {
     @observable data = {};

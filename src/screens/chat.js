@@ -21,13 +21,6 @@ import currentUserStore from '@stores/user';
 import messagesStore from '@stores/messages';
 import membersStore from '@stores/members';
 
-// @observer
-// class Name extends Component {
-//     render() {
-//         return <Text>{membersStore.data[this.props.userId].name}</Text>;
-//     }
-// }
-
 @observer
 class Chat extends Component {
     static navigationOptions = ({ navigation }) => {

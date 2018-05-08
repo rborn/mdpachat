@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
 import { COLORS } from '@lib/theme';
-import { watchUsers } from '@lib/api';
 
 import _ from 'lodash';
 import { observer } from 'mobx-react/native';

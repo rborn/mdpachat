@@ -4,9 +4,26 @@ import { CameraRoll } from 'react-native';
 // This is a good read article: https://www.codementor.io/blessingoraz/access-camera-roll-with-react-native-9uwupuuy0
 
 import firebase from 'react-native-firebase';
-import _ from 'lodash';
 
 import currentUserStore from '@stores/user';
+import membersStore from '@stores/members';
+
+const SERVER_API_KEY = 'AIzaSyDt0Odhay56DEYoGCt5rJj8ojRirFS8xLA';
+
+const sendPush = async (title, message) => {
+    const res = await fetch('https://fcm.googleapis.com/fcm/send', {
+        method: 'POST',
+        headers: {
+            Authorization: `key=${SERVER_API_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            to: '/topics/chat',
+            notification: { title: title, body: message }
+        })
+    });
+    console.log(await res.json());
+};
 
 const getLastCameraRollPhoto = async () => {
     // get only the last image, CameraRoll doesn't give us an UI but just a list of photos
@@ -62,41 +79,6 @@ const updateUser = async ({ name, photo, description, userId }) => {
     }
 };
 
-const watchUsers = callback => {
-    firebase
-        .database()
-        .ref(`users`)
-        .on('value', snapshot => {
-            //https://rnfirebase.io/docs/v4.0.x/database/reference/Reference#on
-            // the value event triggers everytime we change the database (add/delete/update a message in it)
-            const members = snapshot.val();
-            callback(members);
-        });
-};
-
-const watchMessages = callback => {
-    firebase
-        .database()
-        .ref(`messages`)
-        .on('value', snapshot => {
-            const res = snapshot.val();
-            // the messages are stored as an object in firebase, so we need to map them to an array to populate the FlatList:
-            // https://facebook.github.io/react-native/docs/flatlist.html#data
-            const messages = _.chain(res)
-                .map(item => {
-                    return item;
-                })
-                .sortBy(['timestamp'])
-                // We add a timestamp on the message creation, which is the Firebase timestamp so we know the order of the messages
-                // https://rnfirebase.io/docs/v4.0.x/database/reference/database#getServerTime
-
-                .reverse()
-                .value();
-
-            callback(messages);
-        });
-};
-
 const sendTextMessage = ({ text, userId }) => {
     const timestamp = firebase.database().getServerTime();
     firebase
@@ -104,6 +86,8 @@ const sendTextMessage = ({ text, userId }) => {
         .ref(`messages`)
         .push({ type: 'text', text, userId, timestamp });
     // push message to database https://rnfirebase.io/docs/v4.0.x/database/reference/Reference#push
+
+    sendPush(membersStore.data[userId].name, text);
 };
 
 const uploadMessagePhoto = async ({ image, userId, timestamp }) => {
@@ -125,15 +109,58 @@ const sendPhotoMessage = async ({ image, userId }) => {
         .database()
         .ref(`messages`)
         .push({ type: 'photo', photoUrl, userId, timestamp });
+
+    sendPush(membersStore.data[userId].name, `Sent a 📸`);
+};
+
+const requestPushPremissions = async () => {
+    try {
+        await firebase.messaging().requestPermission();
+        // User has authorised
+        subscribeToTopic();
+        console.log('Push authorized');
+    } catch (error) {
+        console.log('Push denied');
+    }
+};
+
+const checkPushEnabled = async () => {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+        console.log('Push enabled');
+        subscribeToTopic();
+    } else {
+        console.log('Push disabled');
+        requestPushPremissions();
+    }
+};
+
+const subscribeToTopic = async () => {
+    const fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+        firebase.messaging().subscribeToTopic('chat');
+        console.log('Push subscribe to topic');
+    } else {
+        console.log('Push has no token');
+    }
 };
 
 export {
     login,
     register,
     updateUser,
-    watchUsers,
-    watchMessages,
     sendTextMessage,
     sendPhotoMessage,
-    getLastCameraRollPhoto
+    getLastCameraRollPhoto,
+    checkPushEnabled,
+    requestPushPremissions,
+    sendPush
 };
+
+// curl
+// https://fcm.googleapis.com/fcm/send
+
+// -X POST
+// --header "Authorization: key=SERVER_API_KEY"
+// --header "Content-Type: application/json"
+// -d "{\"to\":\"/topics/chat\",\"notification\":{\"title\",\"Hello\",\"body\":\"hey there from curl\"}}"
